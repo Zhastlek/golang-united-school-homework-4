@@ -2,6 +2,8 @@ package string_sum
 
 import (
 	"errors"
+	"strconv"
+	"strings"
 )
 
 //use these errors as appropriate, wrapping them with fmt.Errorf function
@@ -23,5 +25,68 @@ var (
 // Use the errors defined above as described, again wrapping into fmt.Errorf
 
 func StringSum(input string) (output string, err error) {
-	return "", nil
+	operand := FindOperand(input)
+	if operand == "" {
+		return output, errorNotTwoOperands
+	}
+	nums := strings.Split(input, operand)
+	if len(nums) != 2 {
+		return output, errorNotTwoOperands
+	}
+
+	num1, err := strconv.Atoi(nums[0])
+	if err != nil {
+		return output, err
+	}
+	num2, err := strconv.Atoi(nums[1])
+	if err != nil {
+		return output, err
+	}
+
+	result := Calculation(num1, num2, operand)
+	output = strconv.Itoa(result)
+	return output, nil
+}
+
+func Calculation(num1, num2 int, operand string) (result int) {
+	switch operand {
+	case "+":
+		result = num1 + num2
+	case "-":
+		result = num1 - num2
+	case "*":
+		result = num1 * num2
+	case "/":
+		result = num1 / num2
+	case "%":
+		result = num1 % num2
+	}
+	return result
+}
+
+func FindOperand(input string) (operand string) {
+	count := 0
+	for _, value := range input {
+		if value == '+' {
+			operand = "+"
+			count++
+		} else if value == '-' {
+			operand = "-"
+			count++
+		} else if value == '*' {
+			operand = "*"
+			count++
+		} else if value == '/' {
+			operand = "/"
+			count++
+		} else if value == '%' {
+			operand = "%"
+			count++
+		}
+	}
+	if count > 1 {
+		operand = ""
+		return operand
+	}
+	return operand
 }
