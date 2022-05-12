@@ -29,23 +29,23 @@ func StringSum(input string) (output string, err error) {
 	operand := FindOperand(input)
 	if operand == "" {
 		err = fmt.Errorf("%w", errorEmptyInput)
-		return output, err
+		return "", err
 	}
 	nums := strings.Split(input, operand)
 	if len(nums) != 2 {
 		err = fmt.Errorf("%w", errorNotTwoOperands)
-		return output, err
+		return "", err
 	}
 
 	num1, err := strconv.Atoi(nums[0])
 	if err != nil {
 		err = fmt.Errorf("%w", err)
-		return output, err
+		return "", err
 	}
 	num2, err := strconv.Atoi(nums[1])
 	if err != nil {
 		err = fmt.Errorf("%w", err)
-		return output, err
+		return "", err
 	}
 
 	result := Calculation(num1, num2, operand)
