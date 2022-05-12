@@ -26,14 +26,18 @@ var (
 // Use the errors defined above as described, again wrapping into fmt.Errorf
 
 func StringSum(input string) (output string, err error) {
-	operand := FindOperand(input)
-	if operand == "" {
+	operand, sumOperand := FindOperand(input)
+	if operand == "" && sumOperand == 1 {
 		err = fmt.Errorf("%w", errorEmptyInput)
+		return "", err
+	}
+	if operand == "" && sumOperand > 1 {
+		err = fmt.Errorf("%w", errorNotTwoOperands)
 		return "", err
 	}
 	nums := strings.Split(input, operand)
 	if len(nums) != 2 {
-		err = fmt.Errorf("%w", errorNotTwoOperands)
+		err = fmt.Errorf("%w", errorEmptyInput)
 		return "", err
 	}
 
@@ -69,8 +73,7 @@ func Calculation(num1, num2 int, operand string) (result int) {
 	return result
 }
 
-func FindOperand(input string) (operand string) {
-	count := 0
+func FindOperand(input string) (operand string, count int) {
 	for _, value := range input {
 		if value == '+' {
 			operand = "+"
@@ -91,7 +94,7 @@ func FindOperand(input string) (operand string) {
 	}
 	if count > 1 {
 		operand = ""
-		return operand
+		return operand, count
 	}
-	return operand
+	return operand, count
 }
