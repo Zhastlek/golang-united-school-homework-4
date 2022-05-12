@@ -28,21 +28,23 @@ var (
 func StringSum(input string) (output string, err error) {
 	operand := FindOperand(input)
 	if operand == "" {
-		return output, errorEmptyInput
+		err = fmt.Errorf("%w", errorEmptyInput)
+		return output, err
 	}
 	nums := strings.Split(input, operand)
 	if len(nums) != 2 {
-		return output, errorNotTwoOperands
+		err = fmt.Errorf("%w", errorNotTwoOperands)
+		return output, err
 	}
 
 	num1, err := strconv.Atoi(nums[0])
 	if err != nil {
-		err = fmt.Errorf("%d", err)
+		err = fmt.Errorf("%w", err)
 		return output, err
 	}
 	num2, err := strconv.Atoi(nums[1])
 	if err != nil {
-		err = fmt.Errorf("%d", err)
+		err = fmt.Errorf("%w", err)
 		return output, err
 	}
 
